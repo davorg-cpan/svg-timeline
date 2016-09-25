@@ -1,0 +1,177 @@
+package Timeline::SVG;
+
+use Moose;
+use Time::Piece;
+use SVG;
+use List::Util qw[min max];
+use Carp;
+
+has events => (
+  traits  => ['Array'],
+  isa     => 'ArrayRef[HashRef]',
+  is      => 'rw',
+  default => sub { [] },
+  handles => {
+    all_events   => 'elements',
+    add_event    => 'push',
+    count_events => 'count',
+    has_events   => 'count',
+  },
+);
+
+has svg => (
+  is         => 'ro',
+  isa        => 'SVG',
+  lazy_build => 1,
+  handles    => [qw[xmlify line text rect cdata]],
+);
+
+sub _build_svg {
+  my $self = shift;
+  return SVG->new(
+    width  => ( $self->years * $self->pixels_per_year ),
+    height => $self->height,
+  );
+}
+
+has default_colour => (
+  is         => 'ro',
+  isa        => 'Str',
+  lazy_build => 1,
+);
+
+sub _build_default_colour {
+  return 'rgb(255,127,127)';
+}
+
+# The height of a bar in pixels
+has bar_height => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 18,
+);
+
+# The number of years between vertical grid lines
+has years_per_grid => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 10, # One decade by default
+);
+
+# The number of horizontal pixels to use for each year
+has pixels_per_year => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 5,
+);
+
+# Padding at the top and bottom of each person bar (in pixels)
+has bar_padding => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 2,
+);
+
+has height => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 1500,
+);
+
+# The colour that the decade lines are drawn on the chart
+has decade_line_colour => (
+  is      => 'ro',
+  isa     => 'Str',
+  default => 'rgb(127,127,127)',
+);
+
+# The colour that the bars are outlined
+has bar_outline_colour => (
+  is      => 'ro',
+  isa     => 'Str',
+  default => 'rgb(0,0,0)',
+);
+
+sub draw_grid{
+  my $self = shift;
+
+  my $curr_year = $self->min_year;
+  my $x      = 0;
+
+  # Draw the decade lines
+  while ( $curr_year <= $self->max_year ) {
+    unless ( $curr_year % $self->years_per_grid ) {
+      $self->line(
+        x1           => $x,
+        y1           => 0,
+        x2           => $x,
+        y2           => $self->height,
+        stroke       => $self->decade_line_colour,
+        stroke_width => 1
+      );
+      $self->text(
+        x           => $x + 1,
+        y           => 12,
+        'font-size' => $self->bar_height / 2
+      )->cdata($curr_year);
+    }
+    $curr_year++;
+    $x += $self->pixels_per_year;
+  }
+
+  return $self;
+}
+
+sub draw {
+  my $self = shift;
+  my %args = @_;
+
+  croak "Can't draw a timeline with no events"
+    unless $self->has_events;
+
+  $self->draw_grid;
+
+  my $curr_event_idx = 1;
+  foreach ($self->all_events) {
+    $self->rect(
+      x              => $_->{start} - $self->min_year,
+      y              => $self->bar_height * $curr_event_idx,
+      width          => $_->{end} - $_->{start},
+      height         => $self->bar_height,
+      fill           => $_->{colour} // $self->default_colour,
+      stroke         => $self->bar_outline_colour,
+      'stroke-width' => 1
+    );
+
+    $self->text(
+      x => $_->{start} - $self->min_year + 1,
+      y => $self->bar_height * (1+$curr_event_idx),
+      'font-size' => $self->bar_height - $self->bar_padding,
+    )->cdata($_->{text});
+
+    $curr_event_idx++;
+  }
+
+  return $self->xmlify;
+}
+
+sub min_year {
+  my $self = shift;
+  return unless $self->has_events;
+  my @years = map { $_->{start} } $self->all_events;
+  return min(@years);
+}
+
+sub max_year {
+  my $self = shift;
+  return unless $self->has_events;
+  my @years = map { $_->{end} } $self->all_events;
+  return max(@years);
+}
+
+sub years {
+  my $self = shift;
+  return $self->max_year - $self->min_year;
+}
+
+1;
