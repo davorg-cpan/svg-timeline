@@ -1,0 +1,6 @@
+#!/usr/bin/bash
+
+TIMELINE=`dirname $0`
+TIMELINE+="/timeline"
+echo $TIMELINE
+$TIMELINE --years_per_grid=100 --width=1000 --height=200 < genesis5.dat > genesis.svg
