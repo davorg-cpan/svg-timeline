@@ -19,6 +19,18 @@ has events => (
   },
 );
 
+has width => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 2048,
+);
+
+has height => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 1152,
+);
+
 has svg => (
   is         => 'ro',
   isa        => 'SVG',
@@ -29,7 +41,7 @@ has svg => (
 sub _build_svg {
   my $self = shift;
   return SVG->new(
-    width  => ( $self->years * $self->pixels_per_year ),
+    width  => $self->width,
     height => $self->height,
   );
 }
@@ -44,25 +56,11 @@ sub _build_default_colour {
   return 'rgb(255,127,127)';
 }
 
-# The height of a bar in pixels
-has bar_height => (
-  is      => 'ro',
-  isa     => 'Int',
-  default => 18,
-);
-
 # The number of years between vertical grid lines
 has years_per_grid => (
   is      => 'ro',
   isa     => 'Int',
   default => 10, # One decade by default
-);
-
-# The number of horizontal pixels to use for each year
-has pixels_per_year => (
-  is      => 'ro',
-  isa     => 'Int',
-  default => 5,
 );
 
 # Padding at the top and bottom of each person bar (in pixels)
@@ -133,9 +131,12 @@ sub draw {
 
   my $curr_event_idx = 1;
   foreach ($self->all_events) {
+    my $x = $_->{start} - $self->min_year;
+    my $y = $self->bar_height * $curr_event_idx;
+
     $self->rect(
-      x              => $_->{start} - $self->min_year,
-      y              => $self->bar_height * $curr_event_idx,
+      x              => $x,
+      y              => $y,
       width          => $_->{end} - $_->{start},
       height         => $self->bar_height,
       fill           => $_->{colour} // $self->default_colour,
@@ -144,9 +145,9 @@ sub draw {
     );
 
     $self->text(
-      x => $_->{start} - $self->min_year + 1,
-      y => $self->bar_height * (1+$curr_event_idx),
-      'font-size' => $self->bar_height - $self->bar_padding,
+      x => $x + $self->bar_height * 0.2,
+      y => $y + $self->bar_height * 0.8,
+      'font-size' => $self->bar_height * 0.8,
     )->cdata($_->{text});
 
     $curr_event_idx++;
@@ -172,6 +173,16 @@ sub max_year {
 sub years {
   my $self = shift;
   return $self->max_year - $self->min_year;
+}
+
+sub pixels_per_year {
+  my $self = shift;
+  return $self->width / $self->years;
+}
+
+sub bar_height {
+  my $self = shift;
+  return $self->height / ($self->count_events + 1);
 }
 
 1;
