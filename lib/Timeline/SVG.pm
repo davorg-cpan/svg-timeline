@@ -42,7 +42,7 @@ sub _build_viewbox {
   return join ' ',
     $self->min_year,
     0,
-    $self->max_year,
+    $self->years,
     $self->bar_height * $self->count_events;
 }
 
