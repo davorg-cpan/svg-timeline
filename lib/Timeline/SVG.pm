@@ -21,13 +21,13 @@ has events => (
 
 has width => (
   is      => 'ro',
-  isa     => 'Int',
+  isa     => 'Str',
   default => '100%',
 );
 
 has height => (
   is      => 'ro',
-  isa     => 'Int',
+  isa     => 'Str',
   default => '100%',
 );
 
@@ -79,6 +79,12 @@ has years_per_grid => (
   default => 10, # One decade by default
 );
 
+has bar_height => (
+  is      => 'ro',
+  isa     => 'Int',
+  default => 50,
+);
+
 # Padding at the top and bottom of each person bar (in pixels)
 has bar_padding => (
   is      => 'ro',
@@ -117,7 +123,7 @@ sub draw_grid{
         stroke_width => 1
       );
       $self->text(
-        x           => $x + 1,
+        x           => $curr_year + 1,
         y           => 12,
         'font-size' => $self->bar_height / 2
       )->cdata($curr_year);
@@ -186,11 +192,6 @@ sub years {
 sub pixels_per_year {
   my $self = shift;
   return $self->width / $self->years;
-}
-
-sub bar_height {
-  my $self = shift;
-  return $self->height / ($self->count_events + 1);
 }
 
 1;
