@@ -31,6 +31,21 @@ has height => (
   default => 1152,
 );
 
+has viewbox => (
+  is         => 'ro',
+  isa        => 'Str',
+  lazy_build => 1,
+);
+
+sub _build_viewbox {
+  my $self = shift;
+  return join ' ',
+    $self->min_year,
+    0,
+    $self->max_year,
+    $self->bar_height * $self->count_events;
+}
+
 has svg => (
   is         => 'ro',
   isa        => 'SVG',
@@ -41,8 +56,9 @@ has svg => (
 sub _build_svg {
   my $self = shift;
   return SVG->new(
-    width  => $self->width,
-    height => $self->height,
+    width   => $self->width,
+    height  => $self->height,
+    viewBox => $self->viewbox,
   );
 }
 
