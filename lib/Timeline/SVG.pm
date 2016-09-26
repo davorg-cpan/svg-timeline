@@ -110,15 +110,14 @@ sub draw_grid{
   my $self = shift;
 
   my $curr_year = $self->min_year;
-  my $x      = 0;
 
-  # Draw the decade lines
+  # Draw the grid lines
   while ( $curr_year <= $self->max_year ) {
     unless ( $curr_year % $self->years_per_grid ) {
       $self->line(
-        x1           => $x,
+        x1           => $curr_year,
         y1           => 0,
-        x2           => $x,
+        x2           => $curr_year,
         y2           => $self->height,
         stroke       => $self->decade_line_colour,
         stroke_width => 1
@@ -130,7 +129,6 @@ sub draw_grid{
       )->cdata($curr_year);
     }
     $curr_year++;
-    $x += $self->pixels_per_year;
   }
 
   return $self;
@@ -147,7 +145,7 @@ sub draw {
 
   my $curr_event_idx = 1;
   foreach ($self->all_events) {
-    my $x = $_->{start} - $self->min_year;
+    my $x = $_->{start};
     my $y = $self->bar_height * $curr_event_idx;
 
     $self->rect(
