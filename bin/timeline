@@ -11,14 +11,11 @@ use Timeline::SVG;
 my %opts;
 
 GetOptions(
-  'years_per_grid=i' => \&opt_handler,
-  'width=i'          => \&opt_handler,
-  'height=i'         => \&opt_handler,
+  \%opts,
+  'years_per_grid=i',
+  'width=i',
+  'height=i',
 );
-
-sub opt_handler {
-  $opts{"$_[0]"} = $_[1];
-}
 
 my @events;
 while (<>) {
