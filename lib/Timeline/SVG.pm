@@ -22,13 +22,13 @@ has events => (
 has width => (
   is      => 'ro',
   isa     => 'Int',
-  default => 2048,
+  default => '100%',
 );
 
 has height => (
   is      => 'ro',
   isa     => 'Int',
-  default => 1152,
+  default => '100%',
 );
 
 has viewbox => (
@@ -84,12 +84,6 @@ has bar_padding => (
   is      => 'ro',
   isa     => 'Int',
   default => 2,
-);
-
-has height => (
-  is      => 'ro',
-  isa     => 'Int',
-  default => 1500,
 );
 
 # The colour that the decade lines are drawn on the chart
