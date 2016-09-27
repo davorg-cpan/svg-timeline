@@ -13,8 +13,8 @@ my %opts;
 GetOptions(
   \%opts,
   'years_per_grid=i',
-  'width=i',
-  'height=i',
+  'width=s',
+  'height=s',
 );
 
 my @events;
