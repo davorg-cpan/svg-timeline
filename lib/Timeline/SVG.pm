@@ -84,11 +84,11 @@ has bar_height => (
   default => 50,
 );
 
-# Padding at the top and bottom of each person bar (in pixels)
-has bar_padding => (
+# Size of the vertical gap between bars (as a fraction of a bar)
+has bar_spacing => (
   is      => 'ro',
-  isa     => 'Int',
-  default => 2,
+  isa     => 'Num',
+  default => 0.25,
 );
 
 # The colour that the decade lines are drawn on the chart
@@ -117,18 +117,32 @@ sub draw_grid{
         x1           => $curr_year,
         y1           => 0,
         x2           => $curr_year,
-        y2           => $self->height,
+        y2           => ($self->bar_height * ($self->count_events + 1))
+                      + ($self->bar_height * $self->bar_spacing
+                         * ($self->count_events - 1)),
         stroke       => $self->decade_line_colour,
         stroke_width => 1
       );
       $self->text(
         x           => $curr_year + 1,
-        y           => 12,
+        y           => 20,
         'font-size' => $self->bar_height / 2
       )->cdata($curr_year);
     }
     $curr_year++;
   }
+
+  $self->rect(
+     x             => $self->min_year,
+     y             => 0,
+     width         => $self->years,
+     height        => ($self->bar_height * ($self->count_events + 1))
+                    + ($self->bar_height * $self->bar_spacing
+                       * ($self->count_events - 1)),
+     stroke        => $self->bar_outline_colour,
+    'stroke-width' => 1,
+    fill           => 'none',
+  );
 
   return $self;
 }
@@ -145,7 +159,9 @@ sub draw {
   my $curr_event_idx = 1;
   foreach ($self->all_events) {
     my $x = $_->{start};
-    my $y = $self->bar_height * $curr_event_idx;
+    my $y = ($self->bar_height * $curr_event_idx)
+          + ($self->bar_height * $self->bar_spacing
+             * ($curr_event_idx - 1));
 
     $self->rect(
       x              => $x,
