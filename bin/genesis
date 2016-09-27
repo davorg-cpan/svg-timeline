@@ -2,5 +2,4 @@
 
 TIMELINE=`dirname $0`
 TIMELINE+="/timeline"
-echo $TIMELINE
 $TIMELINE --years_per_grid=100 < genesis5.dat > genesis.svg
