@@ -1,7 +1,6 @@
 package Timeline::SVG;
 
 use Moose;
-use Time::Piece;
 use SVG;
 use List::Util qw[min max];
 use Carp;
