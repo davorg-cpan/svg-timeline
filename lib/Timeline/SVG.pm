@@ -188,9 +188,4 @@ sub years {
   return $self->max_year - $self->min_year;
 }
 
-sub pixels_per_year {
-  my $self = shift;
-  return $self->width / $self->years;
-}
-
 1;
