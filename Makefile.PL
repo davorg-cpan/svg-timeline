@@ -1,6 +1,6 @@
 use ExtUtils::MakeMaker;
 
-WriteMakeFile(
+WriteMakefile(
   NAME => 'Timeline::SVG',
   VERSION_FROM => 'lib/Timeline/SVG.pm',
   BUILD_REQUIRES => {
@@ -12,7 +12,7 @@ WriteMakeFile(
     'List::Util' => 0,
     Carp => 0,
   },
-  REQUIRES => {
+  PREREQ_PM => {
     SVG => 0,
     Moose => 0,
     'Time::Piece' => 0,
