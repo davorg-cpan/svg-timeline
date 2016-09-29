@@ -19,6 +19,7 @@ GetOptions(
 
 my @events;
 while (<>) {
+  chomp;
   my %rec;
   @rec{qw[text start end]} = split /\t/;
   push @events, \%rec;

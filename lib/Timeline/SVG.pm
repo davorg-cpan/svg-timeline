@@ -1,5 +1,7 @@
 package Timeline::SVG;
 
+use 5.010;
+
 use Moose;
 use SVG;
 use List::Util qw[min max];
@@ -42,7 +44,8 @@ sub _build_viewbox {
     $self->min_year,
     0,
     $self->years,
-    $self->bar_height * $self->count_events;
+    ($self->bar_height * $self->count_events) + $self->bar_height
+    + (($self->count_events - 1) * $self->bar_height * $self->bar_spacing);
 }
 
 has svg => (
@@ -54,6 +57,9 @@ has svg => (
 
 sub _build_svg {
   my $self = shift;
+
+  $_->{end} //= (localtime)[5] + 1900 foreach $self->all_events;
+
   return SVG->new(
     width   => $self->width,
     height  => $self->height,
@@ -195,7 +201,7 @@ sub min_year {
 sub max_year {
   my $self = shift;
   return unless $self->has_events;
-  my @years = map { $_->{end} } $self->all_events;
+  my @years = map { $_->{end} // (localtime)[5] } $self->all_events;
   return max(@years);
 }
 
