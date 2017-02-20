@@ -17,14 +17,14 @@ GetOptions(
   'height=s',
 );
 
+my $timeline = Timeline::SVG->new(%opts);
+
 my @events;
 while (<>) {
   chomp;
   my %rec;
   @rec{qw[text start end]} = split /\t/;
-  push @events, \%rec;
+  $timeline->add_event(\%rec);
 }
-
-my $timeline = Timeline::SVG->new(%opts, events => \@events);
 
 say $timeline->draw;
