@@ -23,7 +23,7 @@ my @events;
 while (<>) {
   chomp;
   my %rec;
-  @rec{qw[text start end]} = split /\t/;
+  @rec{qw[text start end colour]} = split /\t/;
   $timeline->add_event(\%rec);
 }
 
