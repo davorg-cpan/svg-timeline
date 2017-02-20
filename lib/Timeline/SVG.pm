@@ -1,3 +1,45 @@
+=head1 NAME
+
+Timelime::SVG - Create SVG timeline charts
+
+=head1 SYNOPSIS
+
+    use Timeline::SVG;
+
+    my $tl = Timeline::SVG->new;
+
+    $tl->add_event({
+      start => 1914,
+      end   => 1918,
+      text  => 'World War I',
+    });
+
+    $tl->add_event({
+      start => 1939,
+      end   => 1945,
+      text  => 'World War II',
+    });
+
+    print $tl->draw;
+
+=head1 DESCRIPTION
+
+TODO
+
+=head1 METHODS
+
+=head2 new(\%options)
+
+Creates and returns a new Timeline::SVG object. 
+
+Takes an optional hash reference containing configuration options. You
+probably don't need any of these, but the following options are supported:
+
+=over 4
+
+=cut
+
+
 package Timeline::SVG;
 
 use 5.010;
@@ -6,6 +48,11 @@ use Moose;
 use SVG;
 use List::Util qw[min max];
 use Carp;
+
+=item * events - a reference to an array containing events. Events are hash
+references. See L<add_event> below for the format of events.
+
+=cut
 
 has events => (
   traits  => ['Array'],
@@ -20,17 +67,33 @@ has events => (
   },
 );
 
+=item * width - the width of the output in any format used by SVG. The default
+is 100%.
+
+=cut
+
 has width => (
   is      => 'ro',
   isa     => 'Str',
   default => '100%',
 );
 
+=item * height - the height of the output in any format used by SVG. The
+default is 100%.
+
+=cut
+
 has height => (
   is      => 'ro',
   isa     => 'Str',
   default => '100%',
 );
+
+=item * viewport - a viewport definition (which is a space separated list of
+four integers. Unless you know what you're doing, it's probably best to leave
+the class to work this out for you.
+
+=cut
 
 has viewbox => (
   is         => 'ro',
@@ -47,6 +110,12 @@ sub _build_viewbox {
     ($self->bar_height * $self->count_events) + $self->bar_height
     + (($self->count_events - 1) * $self->bar_height * $self->bar_spacing);
 }
+
+=item * svg - an instance of the SVG class that is used to generate the final
+SVG output. Unless you're using a subclass of this class for some reason,
+there is no reason to set this manually.
+
+=cut
 
 has svg => (
   is         => 'ro',
@@ -67,6 +136,12 @@ sub _build_svg {
   );
 }
 
+=item * default_colour - the colour that is used to fill the timeline
+blocks. This should be defined in the RGB format used by SVG. For example,
+red would be 'RGB(255,0,0)'.
+
+=cut
+
 has default_colour => (
   is         => 'ro',
   isa        => 'Str',
@@ -77,6 +152,12 @@ sub _build_default_colour {
   return 'rgb(255,127,127)';
 }
 
+=item * years_per_grid - the number of years between vertical grid lines
+in the output. The default of 10 should be fine unless your timeline covers
+a really long timespan.
+
+=cut
+
 # The number of years between vertical grid lines
 has years_per_grid => (
   is      => 'ro',
@@ -84,11 +165,20 @@ has years_per_grid => (
   default => 10, # One decade by default
 );
 
+=item * bar_height - the height of an individual timeline bar.
+
+=cut
+
 has bar_height => (
   is      => 'ro',
   isa     => 'Int',
   default => 50,
 );
+
+=item * bar_spacing - the height if the vertical space between bars (expresssed
+as a decimal fraction of the bar height).
+
+=cut
 
 # Size of the vertical gap between bars (as a fraction of a bar)
 has bar_spacing => (
@@ -97,6 +187,10 @@ has bar_spacing => (
   default => 0.25,
 );
 
+=item * decade_line_colour - the colour of the grid lines.
+
+=cut
+
 # The colour that the decade lines are drawn on the chart
 has decade_line_colour => (
   is      => 'ro',
@@ -104,12 +198,23 @@ has decade_line_colour => (
   default => 'rgb(127,127,127)',
 );
 
+=item * bar_outline_colour - the colour that is used for the outline of the
+timeline bars.
+
+=cut
+
 # The colour that the bars are outlined
 has bar_outline_colour => (
   is      => 'ro',
   isa     => 'Str',
   default => 'rgb(0,0,0)',
 );
+
+=back
+
+=head2 draw_grid
+
+=cut
 
 sub draw_grid{
   my $self = shift;
@@ -153,6 +258,10 @@ sub draw_grid{
   return $self;
 }
 
+=head2 draw
+
+=cut
+
 sub draw {
   my $self = shift;
   my %args = @_;
@@ -191,12 +300,20 @@ sub draw {
   return $self->xmlify;
 }
 
+=head2 min_year
+
+=cut
+
 sub min_year {
   my $self = shift;
   return unless $self->has_events;
   my @years = map { $_->{start} } $self->all_events;
   return min(@years);
 }
+
+=head2 max_year
+
+=cut
 
 sub max_year {
   my $self = shift;
@@ -205,9 +322,26 @@ sub max_year {
   return max(@years);
 }
 
+=head2 years
+
+=cut
+
 sub years {
   my $self = shift;
   return $self->max_year - $self->min_year;
 }
+
+=head1 AUTHOR
+ 
+Dave Cross <dave@perlhacks.com>
+ 
+=head1 COPYRIGHT AND LICENCE
+ 
+Copyright (c) 2017, Magnum Solutions Ltd. All Rights Reserved.
+ 
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+ 
+=cut
 
 1;
