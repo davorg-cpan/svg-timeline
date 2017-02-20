@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+BINDIR=`dirname $0`
+TIMELINE="$BINDIR/timeline"
+$TIMELINE --years_per_grid=100 < $BINDIR/../examples/genesis5.dat > genesis.svg
