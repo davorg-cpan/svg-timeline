@@ -1,10 +1,10 @@
 use Test::More;
 
 BEGIN {
-  use_ok 'Timeline::SVG';
+  use_ok 'SVG::Timeline';
 }
 
-ok(my $tl = Timeline::SVG->new);
-isa_ok($tl, 'Timeline::SVG');
+ok(my $tl = SVG::Timeline->new);
+isa_ok($tl, 'SVG::Timeline');
 
 done_testing;

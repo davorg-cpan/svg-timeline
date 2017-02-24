@@ -4,9 +4,9 @@ Timelime::SVG - Create SVG timeline charts
 
 =head1 SYNOPSIS
 
-    use Timeline::SVG;
+    use SVG::Timeline;
 
-    my $tl = Timeline::SVG->new;
+    my $tl = SVG::Timeline->new;
 
     $tl->add_event({
       start => 1914,
@@ -30,7 +30,7 @@ TODO
 
 =head2 new(\%options)
 
-Creates and returns a new Timeline::SVG object. 
+Creates and returns a new SVG::Timeline object. 
 
 Takes an optional hash reference containing configuration options. You
 probably don't need any of these, but the following options are supported:
@@ -40,7 +40,7 @@ probably don't need any of these, but the following options are supported:
 =cut
 
 
-package Timeline::SVG;
+package SVG::Timeline;
 
 use 5.010;
 

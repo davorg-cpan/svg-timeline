@@ -6,7 +6,7 @@ use 5.010;
 
 use List::Util qw[min max];
 use Getopt::Long;
-use Timeline::SVG;
+use SVG::Timeline;
 
 my %opts;
 
@@ -17,7 +17,7 @@ GetOptions(
   'height=s',
 );
 
-my $timeline = Timeline::SVG->new(%opts);
+my $timeline = SVG::Timeline->new(%opts);
 
 my @events;
 while (<>) {

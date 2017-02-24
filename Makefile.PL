@@ -1,8 +1,8 @@
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-  NAME => 'Timeline::SVG',
-  VERSION_FROM => 'lib/Timeline/SVG.pm',
+  NAME => 'SVG::Timeline',
+  VERSION_FROM => 'lib/SVG/Timeline.pm',
   BUILD_REQUIRES => {
     'Test::More' => 0,
     'ExtUtils::MakeMaker' => 0,
