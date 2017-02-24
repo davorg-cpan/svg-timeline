@@ -45,9 +45,20 @@ package SVG::Timeline;
 use 5.010;
 
 use Moose;
+use Moose::Util::TypeConstraints;
 use SVG;
 use List::Util qw[min max];
 use Carp;
+
+use SVG::Timeline::Event;
+
+subtype 'ArrayOfEvents', as 'ArrayRef[SVG::Timeline::Event]';
+
+coerce 'ArrayOfEvents',
+  from 'HashRef',
+  via { [ SVG::Timeline::Event->new($_) ] },
+  from 'ArrayRef[HashRef]',
+  via { [ map { SVG::Timeline::Event->new($_) } @$_ ] };
 
 =item * events - a reference to an array containing events. Events are hash
 references. See L<add_event> below for the format of events.
@@ -56,8 +67,9 @@ references. See L<add_event> below for the format of events.
 
 has events => (
   traits  => ['Array'],
-  isa     => 'ArrayRef[HashRef]',
+  isa     => 'ArrayOfEvents',
   is      => 'rw',
+  coerce  => 1,
   default => sub { [] },
   handles => {
     all_events   => 'elements',
