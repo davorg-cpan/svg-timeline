@@ -22,8 +22,8 @@ WriteMakefile(
     resources => {
       repository => {
         type => 'git',
-        url => 'git://github.com/davorg/timeline-svg.git',
-        web => 'https://github.com/davorg/timeline-svg',
+        url => 'git://github.com/davorg/svg-timeline.git',
+        web => 'https://github.com/davorg/svg-timeline',
       },
     },
   },
