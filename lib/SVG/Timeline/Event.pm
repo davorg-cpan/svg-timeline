@@ -1,3 +1,13 @@
+=head1 NAME
+
+SVG::Timelime::Event - A single event in an SVG timeline.
+
+=head1 SYNOPSIS
+
+See L<SBG::Timeline>.
+
+=cut
+
 package SVG::Timeline::Event;
 
 use 5.010;
@@ -32,5 +42,18 @@ has colour => (
   isa => 'Maybe[Str]',
   required => 0,
 );
+
+=head1 AUTHOR
+
+Dave Cross <dave@perlhacks.com>
+
+=head1 COPYRIGHT AND LICENCE
+
+Copyright (c) 2017, Magnum Solutions Ltd. All Rights Reserved.
+
+This library is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+=cut
 
 1;
