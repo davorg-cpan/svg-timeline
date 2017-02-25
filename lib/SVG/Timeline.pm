@@ -285,7 +285,7 @@ sub draw {
 
   my $curr_event_idx = 1;
   foreach ($self->all_events) {
-    my $x = $_->{start};
+    my $x = $_->start;
     my $y = ($self->bar_height * $curr_event_idx)
           + ($self->bar_height * $self->bar_spacing
              * ($curr_event_idx - 1));
@@ -293,9 +293,9 @@ sub draw {
     $self->rect(
       x              => $x,
       y              => $y,
-      width          => $_->{end} - $_->{start},
+      width          => $_->end - $_->start,
       height         => $self->bar_height,
-      fill           => $_->{colour} // $self->default_colour,
+      fill           => $_->colour // $self->default_colour,
       stroke         => $self->bar_outline_colour,
       'stroke-width' => 1
     );
@@ -304,7 +304,7 @@ sub draw {
       x => $x + $self->bar_height * 0.2,
       y => $y + $self->bar_height * 0.8,
       'font-size' => $self->bar_height * 0.8,
-    )->cdata($_->{text});
+    )->cdata($_->text);
 
     $curr_event_idx++;
   }
@@ -319,7 +319,7 @@ sub draw {
 sub min_year {
   my $self = shift;
   return unless $self->has_events;
-  my @years = map { $_->{start} } $self->all_events;
+  my @years = map { $_->start } $self->all_events;
   return min(@years);
 }
 
@@ -330,7 +330,7 @@ sub min_year {
 sub max_year {
   my $self = shift;
   return unless $self->has_events;
-  my @years = map { $_->{end} // (localtime)[5] } $self->all_events;
+  my @years = map { $_->end // (localtime)[5] } $self->all_events;
   return max(@years);
 }
 
