@@ -30,7 +30,7 @@ TODO
 
 =head2 new(\%options)
 
-Creates and returns a new SVG::Timeline object. 
+Creates and returns a new SVG::Timeline object.
 
 Takes an optional hash reference containing configuration options. You
 probably don't need any of these, but the following options are supported:
@@ -101,6 +101,16 @@ has height => (
   default => '100%',
 );
 
+=item * aspect_ration - the default is 16/9.
+
+=cut
+
+has aspect_ratio => (
+  is => 'ro',
+  isa => 'Num',
+  default => 16/9,
+);
+
 =item * viewport - a viewport definition (which is a space separated list of
 four integers. Unless you know what you're doing, it's probably best to leave
 the class to work this out for you.
@@ -116,9 +126,9 @@ has viewbox => (
 sub _build_viewbox {
   my $self = shift;
   return join ' ',
-    $self->min_year,
+    $self->min_year * $self->units_per_year,
     0,
-    $self->years,
+    $self->years * $self->units_per_year,
     ($self->bar_height * $self->count_events) + $self->bar_height
     + (($self->count_events - 1) * $self->bar_height * $self->bar_spacing);
 }
@@ -224,6 +234,52 @@ has bar_outline_colour => (
 
 =back
 
+=head2 calculated_height
+
+The height of the timeline in "calculated units".
+
+=cut
+
+sub calculated_height {
+  my $self = shift;
+
+  # Number of events ...
+  my $calulated_height = $self->count_events;
+  # ... plus one for the header ...
+  $calulated_height++;
+  # ... multiplied by the bar height...
+  $calulated_height *= $self->bar_height;
+  # .. add spacing.
+  $calulated_height += $self->bar_height * $self->bar_spacing *
+                       ($self->count_events - 1);
+
+  return $calulated_height;
+}
+
+=head2 calculated_width
+
+The widtn in "calulated units".
+
+=cut
+
+sub calculated_width {
+  my $self = shift;
+
+  return $self->calculated_height * $self->aspect_ratio;
+}
+
+=head2 units_per_year
+
+The number of horizontal units that each year should take up.
+
+=cut
+
+sub units_per_year {
+  my $self = shift;
+
+  return $self->calculated_width / $self->years;
+}
+
 =head2 draw_grid
 
 =cut
@@ -232,22 +288,21 @@ sub draw_grid{
   my $self = shift;
 
   my $curr_year = $self->min_year;
+  my $units_per_year = $self->units_per_year;
 
   # Draw the grid lines
   while ( $curr_year <= $self->max_year ) {
     unless ( $curr_year % $self->years_per_grid ) {
       $self->line(
-        x1           => $curr_year,
+        x1           => $curr_year * $units_per_year,
         y1           => 0,
-        x2           => $curr_year,
-        y2           => ($self->bar_height * ($self->count_events + 1))
-                      + ($self->bar_height * $self->bar_spacing
-                         * ($self->count_events - 1)),
+        x2           => $curr_year * $units_per_year,
+        y2           => $self->calculated_height,
         stroke       => $self->decade_line_colour,
         stroke_width => 1
       );
       $self->text(
-        x           => $curr_year + 1,
+        x           => ($curr_year + 1) * $units_per_year,
         y           => 20,
         'font-size' => $self->bar_height / 2
       )->cdata($curr_year);
@@ -256,9 +311,9 @@ sub draw_grid{
   }
 
   $self->rect(
-     x             => $self->min_year,
+     x             => $self->min_year * $units_per_year,
      y             => 0,
-     width         => $self->years,
+     width         => $self->years * $units_per_year,
      height        => ($self->bar_height * ($self->count_events + 1))
                     + ($self->bar_height * $self->bar_spacing
                        * ($self->count_events - 1)),
@@ -284,8 +339,9 @@ sub draw {
   $self->draw_grid;
 
   my $curr_event_idx = 1;
+  my $units_per_year = $self->units_per_year;
   foreach ($self->all_events) {
-    my $x = $_->start;
+    my $x = $_->start * $units_per_year;
     my $y = ($self->bar_height * $curr_event_idx)
           + ($self->bar_height * $self->bar_spacing
              * ($curr_event_idx - 1));
@@ -293,7 +349,7 @@ sub draw {
     $self->rect(
       x              => $x,
       y              => $y,
-      width          => $_->end - $_->start,
+      width          => ($_->end - $_->start) * $units_per_year,
       height         => $self->bar_height,
       fill           => $_->colour // $self->default_colour,
       stroke         => $self->bar_outline_colour,
@@ -301,7 +357,7 @@ sub draw {
     );
 
     $self->text(
-      x => $x + $self->bar_height * 0.2,
+      x => ($x + $self->bar_height * 0.2),
       y => $y + $self->bar_height * 0.8,
       'font-size' => $self->bar_height * 0.8,
     )->cdata($_->text);
@@ -344,16 +400,16 @@ sub years {
 }
 
 =head1 AUTHOR
- 
+
 Dave Cross <dave@perlhacks.com>
- 
+
 =head1 COPYRIGHT AND LICENCE
- 
+
 Copyright (c) 2017, Magnum Solutions Ltd. All Rights Reserved.
- 
+
 This library is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
- 
+
 =cut
 
 1;
