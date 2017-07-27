@@ -205,7 +205,6 @@ as a decimal fraction of the bar height).
 
 =cut
 
-# Size of the vertical gap between bars (as a fraction of a bar)
 has bar_spacing => (
   is      => 'ro',
   isa     => 'Num',
@@ -216,7 +215,6 @@ has bar_spacing => (
 
 =cut
 
-# The colour that the decade lines are drawn on the chart
 has decade_line_colour => (
   is      => 'ro',
   isa     => 'Str',
@@ -228,7 +226,6 @@ timeline bars.
 
 =cut
 
-# The colour that the bars are outlined
 has bar_outline_colour => (
   is      => 'ro',
   isa     => 'Str',
@@ -285,6 +282,8 @@ sub units_per_year {
 
 =head2 draw_grid
 
+Method to draw the underlying grid.
+
 =cut
 
 sub draw_grid{
@@ -330,6 +329,8 @@ sub draw_grid{
 
 =head2 draw
 
+Method to draw the timeline.
+
 =cut
 
 sub draw {
@@ -373,6 +374,8 @@ sub draw {
 
 =head2 min_year
 
+Returns the minimum year from all the events in the timeline.
+
 =cut
 
 sub min_year {
@@ -384,6 +387,8 @@ sub min_year {
 
 =head2 max_year
 
+Returns the maximum year from all the events in the timeline.
+
 =cut
 
 sub max_year {
@@ -394,6 +399,8 @@ sub max_year {
 }
 
 =head2 years
+
+The number of years that all the events in the timeline span.
 
 =cut
 
