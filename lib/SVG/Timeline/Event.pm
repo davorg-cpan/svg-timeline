@@ -4,7 +4,7 @@ SVG::Timelime::Event - A single event in an SVG timeline.
 
 =head1 SYNOPSIS
 
-See L<SBG::Timeline>.
+See L<SVG::Timeline>.
 
 =cut
 
