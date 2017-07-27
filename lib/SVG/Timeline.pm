@@ -104,7 +104,7 @@ has height => (
   default => '100%',
 );
 
-=item * aspect_ration - the default is 16/9.
+=item * aspect_ratio - the default is 16/9.
 
 =cut
 
