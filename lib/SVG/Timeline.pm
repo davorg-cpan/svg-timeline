@@ -26,7 +26,7 @@ SVG::Timeline - Create SVG timeline charts
 
 This module allows you to easily create SVG documents that represent timelines.
 
-And SVG timeline is a diagram with a list of years across the top and a
+An SVG timeline is a diagram with a list of years across the top and a
 number of bars below. Each bar represents a period of time.
 
 =head1 METHODS
