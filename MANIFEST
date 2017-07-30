@@ -1,0 +1,15 @@
+Changes.md
+bin/timeline
+examples/genesis5
+examples/genesis5.dat
+examples/henry-viii
+examples/henry-viii.dat
+examples/monarchy
+examples/monarchy.dat
+lib/SVG/Timeline.pm
+lib/SVG/Timeline/Event.pm
+Makefile.PL
+MANIFEST			This list of files
+README.md
+t/load.t
+t/pod-coverage.t
