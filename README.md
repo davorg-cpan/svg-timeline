@@ -1,3 +1,3 @@
-SVG::Timeline
+# SVG::Timeline
 
 Create timelines using SVG.
