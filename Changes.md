@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.3] - 2017-07-31
+
+### Fixed
+
+- Changed the command line program shebang to use `/usr/bin/env perl`
+
 ## [0.0.2] - 2017-07-31
 
 ### Fixed
