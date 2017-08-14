@@ -47,7 +47,7 @@ package SVG::Timeline;
 
 use 5.010;
 
-our $VERSION = '0.0.3';
+our $VERSION = '0.0.4';
 
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -345,28 +345,13 @@ sub draw {
   $self->draw_grid;
 
   my $curr_event_idx = 1;
-  my $units_per_year = $self->units_per_year;
   foreach ($self->all_events) {
-    my $x = $_->start * $units_per_year;
+    my $x = $_->start * $self->units_per_year;
     my $y = ($self->bar_height * $curr_event_idx)
           + ($self->bar_height * $self->bar_spacing
              * ($curr_event_idx - 1));
 
-    $self->rect(
-      x              => $x,
-      y              => $y,
-      width          => ($_->end - $_->start) * $units_per_year,
-      height         => $self->bar_height,
-      fill           => $_->colour // $self->default_colour,
-      stroke         => $self->bar_outline_colour,
-      'stroke-width' => 1
-    );
-
-    $self->text(
-      x => ($x + $self->bar_height * 0.2),
-      y => $y + $self->bar_height * 0.8,
-      'font-size' => $self->bar_height * 0.8,
-    )->cdata($_->text);
+    $_->draw_at($self, $x, $y);
 
     $curr_event_idx++;
   }

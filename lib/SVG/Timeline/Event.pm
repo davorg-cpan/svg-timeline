@@ -43,6 +43,35 @@ has colour => (
   required => 0,
 );
 
+=head1 METHODS
+
+=head2 draw_at($tl, $x, $y)
+
+Draw the event at the given co-ordinates inside the given timeline object.
+
+=cut
+
+sub draw_at {
+  my $self = shift;
+  my ($tl, $x, $y) = @_;
+
+  $tl->rect(
+    x              => $x,
+    y              => $y,
+    width          => ($self->end - $self->start) * $tl->units_per_year,
+    height         => $tl->bar_height,
+    fill           => $self->colour // $tl->default_colour,
+    stroke         => $tl->bar_outline_colour,
+    'stroke-width' => 1
+  );
+
+  $tl->text(
+    x => ($x + $tl->bar_height * 0.2),
+    y => $y + $tl->bar_height * 0.8,
+    'font-size' => $tl->bar_height * 0.8,
+  )->cdata($self->text);
+}
+
 =head1 AUTHOR
 
 Dave Cross <dave@perlhacks.com>
