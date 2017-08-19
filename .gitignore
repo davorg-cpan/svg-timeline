@@ -1,2 +1,5 @@
 MYMETA.*
 Makefile
+SVG-Timeline-*.tar.gz
+blib/
+pm_to_blib
