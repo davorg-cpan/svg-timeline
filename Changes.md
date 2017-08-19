@@ -5,6 +5,7 @@
 ### Improved
 
 - Let the events draw themselves.
+- Moved pod tests from t to xt.
 
 ## [0.0.4] - 2017-08-02
 

@@ -13,5 +13,5 @@ MANIFEST			This list of files
 README.md
 t/load.t
 t/pod-coverage.t
-t/pod.t
-t/01-basic.t
+xt/pod.t
+xt/01-basic.t
