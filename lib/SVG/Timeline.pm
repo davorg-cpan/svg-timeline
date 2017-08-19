@@ -84,6 +84,16 @@ has events => (
   },
 );
 
+around 'add_event' => sub {
+  my $orig = shift;
+  my $self = shift;
+
+  my $index = $self->count_events + 1;
+  $_[0]->{index} = $index;
+
+  $self->$orig(@_);
+};
+
 =item * width - the width of the output in any format used by SVG. The default
 is 100%.
 
@@ -346,12 +356,8 @@ sub draw {
 
   my $curr_event_idx = 1;
   foreach ($self->all_events) {
-    my $x = $_->start * $self->units_per_year;
-    my $y = ($self->bar_height * $curr_event_idx)
-          + ($self->bar_height * $self->bar_spacing
-             * ($curr_event_idx - 1));
 
-    $_->draw_at($self, $x, $y);
+    $_->draw_on($self);
 
     $curr_event_idx++;
   }

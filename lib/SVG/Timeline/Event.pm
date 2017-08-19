@@ -19,6 +19,12 @@ coerce __PACKAGE__,
   from 'HashRef',
   via  { __PACKAGE__->new($_) };
 
+has index => (
+  is => 'ro',
+  isa => 'Int',
+  required => 1,
+);
+
 has text => (
   is => 'ro',
   isa => 'Str',
@@ -45,15 +51,20 @@ has colour => (
 
 =head1 METHODS
 
-=head2 draw_at($tl, $x, $y)
+=head2 draw_on($tl)
 
-Draw the event at the given co-ordinates inside the given timeline object.
+Draw the event inside the given timeline object.
 
 =cut
 
-sub draw_at {
+sub draw_on {
   my $self = shift;
-  my ($tl, $x, $y) = @_;
+  my ($tl) = @_;
+
+  my $x = $self->start * $tl->units_per_year;
+  my $y = ($tl->bar_height * $self->index)
+        + ($tl->bar_height * $tl->bar_spacing
+           * ($self->index - 1));
 
   $tl->rect(
     x              => $x,
