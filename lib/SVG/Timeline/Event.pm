@@ -33,13 +33,13 @@ has text => (
 
 has start => (
   is => 'ro',
-  isa => 'Int',
+  isa => 'Num',
   required => 1,
 );
 
 has end => (
   is => 'ro',
-  isa => 'Int',
+  isa => 'Num',
   required => 1,
 );
 
