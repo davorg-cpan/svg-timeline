@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.6] - 2017-08-19
+
+### Improved
+
+- Generally made the class easier to subclass.
+
 ## [0.0.5] - 2017-08-19
 
 ### Improved
@@ -26,7 +32,7 @@
 - Various packaing fixes for better kwalitee
 
 ## [0.0.1] - 2017-07-29
- 
+
 ### Added
- 
+
 - All the things. Release early, release often.

@@ -42,12 +42,9 @@ probably don't need any of these, but the following options are supported:
 
 =cut
 
-
 package SVG::Timeline;
 
 use 5.010;
-
-our $VERSION = '0.0.6';
 
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -55,6 +52,8 @@ use SVG;
 use List::Util qw[min max];
 use Time::Piece;
 use Carp;
+
+our $VERSION = '0.0.6';
 
 use SVG::Timeline::Event;
 
@@ -414,6 +413,9 @@ sub years {
   my $self = shift;
   return $self->max_year - $self->min_year;
 }
+
+no Moose;
+__PACKAGE__->meta->make_immutable;
 
 =head1 AUTHOR
 
