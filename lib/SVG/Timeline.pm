@@ -46,14 +46,14 @@ package SVG::Timeline;
 
 use 5.010;
 
+our $VERSION = '0.0.7';
+
 use Moose;
 use Moose::Util::TypeConstraints;
 use SVG;
 use List::Util qw[min max];
 use Time::Piece;
 use Carp;
-
-our $VERSION = '0.0.6';
 
 use SVG::Timeline::Event;
 
