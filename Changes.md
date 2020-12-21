@@ -1,5 +1,16 @@
 # Change Log
 
+## [0.0.8] - 2020-12-21
+
+### Fixed
+
+- Better testing
+- More subclassable
+
+### Added
+
+- Bugtracker info
+
 ## [0.0.7] - 2017-09-06
 
 ### Fixed
