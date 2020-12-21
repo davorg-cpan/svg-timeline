@@ -28,6 +28,9 @@ WriteMakefile(
         url => 'git://github.com/davorg/svg-timeline.git',
         web => 'https://github.com/davorg/svg-timeline',
       },
+      bugtracker => {
+        web => 'https://github.com/davorg/svg-timeline/issues',
+      },
     },
   },
   EXE_FILES => [ 'bin/timeline' ],

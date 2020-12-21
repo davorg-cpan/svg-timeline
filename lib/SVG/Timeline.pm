@@ -46,7 +46,7 @@ package SVG::Timeline;
 
 use 5.010;
 
-our $VERSION = '0.0.7';
+our $VERSION = '0.0.8';
 
 use Moose;
 use Moose::Util::TypeConstraints;
