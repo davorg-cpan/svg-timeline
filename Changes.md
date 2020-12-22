@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.0.9] - 2020-12-22
+
+### Fixed
+
+- Added Time::Piece to pre-reqs
+
 ## [0.0.8] - 2020-12-21
 
 ### Fixed
