@@ -88,6 +88,9 @@ around 'add_event' => sub {
   my $orig = shift;
   my $self = shift;
 
+  $self->_clear_viewbox;
+  $self->_clear_svg;
+
   my $index = $self->count_events + 1;
   $_[0]->{index} = $index;
 
@@ -136,6 +139,7 @@ has viewbox => (
   is         => 'ro',
   isa        => 'Str',
   lazy_build => 1,
+  clearer    => '_clear_viewbox',
 );
 
 sub _build_viewbox {
@@ -158,6 +162,7 @@ has svg => (
   is         => 'ro',
   isa        => 'SVG',
   lazy_build => 1,
+  clearer    => '_clear_svg',
   handles    => [qw[xmlify line text rect cdata]],
 );
 
