@@ -15,8 +15,8 @@ SVG::Timeline - Create SVG timeline charts
     });
 
     $tl->add_event({
-      start => 1939.66575, # 1 Sep 1939
-      end   => 1945.34795, # 8 May 1945
+      start => '1939-09-01', # 1 Sep 1939
+      end   => '1945-05-08', # 8 May 1945
       text  => 'World War II',
     });
 
@@ -272,13 +272,11 @@ to the timeline. The following details are supported:
 
 =item * text - the name of the event that is displayed on the bar. This is required.
 
-=item * start - the start year of the event. Can be an integer for a full year,
-or a floating point value where the decimal fraction is how far through the year
-the date falls. For example, C<2017.5> is roughly the 2nd of July 2017, or the
-middle of the year. This is required.
+=item * start - the start year of the event. It is a string of format C<yy-mm-dd>.
+For example, C<2017-07-02> is the 2nd of July 2017. C<-mm-dd> as well as C<-dd> can
+be omitted.
 
-=item * end - the end year of the event. Can be an integer or a floating point value.
-This is required.
+=item * end - the end year of the event, requirements are the same as that of C<start>.
  
 =item * colour - the colour that is used to fill the timeline block. This should be
 defined in the RGB format used by SVG. For example, red would be 'RGB(255,0,0)'.

@@ -14,10 +14,17 @@ use 5.010;
 
 use Moose;
 use Moose::Util::TypeConstraints;
+use DateTime;
 
 coerce __PACKAGE__,
   from 'HashRef',
   via  { __PACKAGE__->new($_) };
+
+# Choosen format: yy-mm-dd
+subtype 'Date',
+  as 'Str',
+  where   { m/ \d{4} (?: -\d{2} (?: -\d{2} )? )? /ax },
+  message { "Date format, '$_', is not valid"       };
 
 has index => (
   is => 'ro',
@@ -31,16 +38,30 @@ has text => (
   required => 1,
 );
 
+# Convert date to a floating year
+sub floating_year_of {
+    my ( $self, $date_str, $attr ) = @_;
+    my ( $year, $month, $day ) = split m/-/, $date_str;
+
+    $self->{$attr} = $year;
+    my $date  = DateTime->new( year => $year, month => $month // 1, day => $day // 1 );
+    my $ndays = $date->jd - $date->set( month => 1, day => 1 )->jd;
+
+    $self->{$attr} += $ndays / ( $date->is_leap_year ? 366 : 365 ) if $ndays > 0;
+}
+
 has start => (
   is => 'ro',
-  isa => 'Num',
+  isa => 'Date',
   required => 1,
+  trigger => sub { floating_year_of( @_[0..1], 'start' ) },
 );
 
 has end => (
   is => 'ro',
-  isa => 'Num',
+  isa => 'Date',
   required => 1,
+  trigger => sub { floating_year_of( @_[0..1], 'end' ) },
 );
 
 has colour => (
