@@ -30,6 +30,13 @@ jobs:
       - run: perl -V
       - run: cpanm --installdeps .
       - run: prove -lv t
+      - name: Archive CPAN logs on Windows
+        if: ${{ failure() && matrix.os == 'windows-latest' }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: cpan_log
+          path: C:\Users\RUNNER~1\.cpanm\work\*\build.log
+          retention-days: 5
 
   coverage:
     runs-on: ubuntu-latest
