@@ -15,8 +15,8 @@ SVG::Timeline - Create SVG timeline charts
     });
 
     $tl->add_event({
-      start => 1939,
-      end   => 1945,
+      start => '1939-09-01', # 1 Sep 1939
+      end   => '1945-05-08', # 8 May 1945
       text  => 'World War II',
     });
 
@@ -263,6 +263,27 @@ sub events_in_timeline {
   return $_[0]->count_events;
 }
 
+=head2 add_event
+
+Takes a hash reference with event details and adds an L<SVG::Timeline::Event>
+to the timeline. The following details are supported:
+
+=over 4
+
+=item * text - the name of the event that is displayed on the bar. This is required.
+
+=item * start - the start year of the event. It is a string of format C<yy-mm-dd>.
+For example, C<2017-07-02> is the 2nd of July 2017. C<-mm-dd> as well as C<-dd> can
+be omitted.
+
+=item * end - the end year of the event, requirements are the same as that of C<start>.
+ 
+=item * colour - the colour that is used to fill the timeline block. This should be
+defined in the RGB format used by SVG. For example, red would be 'RGB(255,0,0)'.
+This is optional. If not provided, the C<default_color> is used.
+
+=back
+
 =head2 calculated_height
 
 The height of the timeline in "calculated units".
@@ -287,7 +308,7 @@ sub calculated_height {
 
 =head2 calculated_width
 
-The widtn in "calulated units".
+The width in "calulated units".
 
 =cut
 
