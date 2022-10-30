@@ -46,7 +46,7 @@ package SVG::Timeline;
 
 use 5.010;
 
-our $VERSION = '0.0.10';
+our $VERSION = '0.1.0';
 
 use Moose;
 use Moose::Util::TypeConstraints;
@@ -272,9 +272,9 @@ to the timeline. The following details are supported:
 
 =item * text - the name of the event that is displayed on the bar. This is required.
 
-=item * start - the start year of the event. It is a string of format C<yy-mm-dd>.
-For example, C<2017-07-02> is the 2nd of July 2017. C<-mm-dd> as well as C<-dd> can
-be omitted.
+=item * start - the start year of the event. It is a string of format C<YYYY-MM-DD>.
+For example, C<2017-07-02> is the 2nd of July 2017. The month and day can be omitted
+(in which case they are replaced with '01').
 
 =item * end - the end year of the event, requirements are the same as that of C<start>.
  

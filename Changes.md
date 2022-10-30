@@ -1,8 +1,11 @@
 # Change Log
 
+## [0.1.00] - 2022-10-30
+
 ### Improved
 
-- Use the 'yy-mm-dd' format to pass the 'start' and 'end' date when instanciating an event class
+- Support full dates (YYYY-MM-DD) instead of just years for
+  start and end events (thanks simbabque and tcheukueppo).
 
 ## [0.0.10] - 2022-06-14
 
