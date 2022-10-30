@@ -23,15 +23,26 @@ coerce __PACKAGE__,
 # Chosen format: yyyy-mm-dd
 subtype 'SVG::Timeline::DateStr',
   as 'Str',
-  where   { m/ \d{4} (?: -\d{2} (?: -\d{2} )? )? /ax },
-  message { "Date format, '$_', is not valid"       };
+  where   { m/ \d{4}-\d{2}-\d{2} /ax };
+
+subtype 'SVG::Timeline::YearMonthStr',
+  as 'Str',
+  where   { m/ \d{4}-\d{2} /ax };
+
+subtype 'SVG::Timeline::YearStr',
+  as 'Str',
+  where   { m/ \d{4} /as };
 
 subtype 'SVG::Timeline::Num',
   as 'Num';
 
-coerce 'SVG::Timeline::Num',
-  from 'Int',
+coerce 'SVG::Timeline::DateStr',
+  from 'SVG::Timeline::YearStr',
   via  { $_ . '-01-01' };
+
+coerce 'SVG::Timeline::DateStr',
+  from 'SVG::Timeline::YearMonthStr',
+  via  { $_ . '-01' };
 
 coerce 'SVG::Timeline::Num',
   from 'SVG::Timeline::DateStr',
