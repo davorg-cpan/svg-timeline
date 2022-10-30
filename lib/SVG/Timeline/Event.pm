@@ -14,17 +14,28 @@ use 5.010;
 
 use Moose;
 use Moose::Util::TypeConstraints;
-use DateTime;
+use Time::Piece;
 
 coerce __PACKAGE__,
   from 'HashRef',
   via  { __PACKAGE__->new($_) };
 
-# Choosen format: yy-mm-dd
-subtype 'Date',
+# Chosen format: yyyy-mm-dd
+subtype 'SVG::Timeline::DateStr',
   as 'Str',
   where   { m/ \d{4} (?: -\d{2} (?: -\d{2} )? )? /ax },
   message { "Date format, '$_', is not valid"       };
+
+subtype 'SVG::Timeline::Num',
+  as 'Num';
+
+coerce 'SVG::Timeline::Num',
+  from 'Int',
+  via  { $_ . '-01-01' };
+
+coerce 'SVG::Timeline::Num',
+  from 'SVG::Timeline::DateStr',
+  via  \&str2num;
 
 has index => (
   is => 'ro',
@@ -38,30 +49,26 @@ has text => (
   required => 1,
 );
 
-# Convert date to a floating year
-sub floating_year_of {
-    my ( $self, $date_str, $attr ) = @_;
-    my ( $year, $month, $day ) = split m/-/, $date_str;
+sub str2num {
+  my ($datestr) = @_;
 
-    $self->{$attr} = $year;
-    my $date  = DateTime->new( year => $year, month => $month // 1, day => $day // 1 );
-    my $ndays = $date->jd - $date->set( month => 1, day => 1 )->jd;
+  my $date = Time::Piece->strptime($datestr, '%Y-%m-%d');
 
-    $self->{$attr} += $ndays / ( $date->is_leap_year ? 366 : 365 ) if $ndays > 0;
+  return $date->year + ( $date->yday / ($date->is_leap_year ? 366 : 365) );
 }
 
 has start => (
   is => 'ro',
-  isa => 'Date',
+  isa => 'SVG::Timeline::Num',
   required => 1,
-  trigger => sub { floating_year_of( @_[0..1], 'start' ) },
+  coerce => 1,
 );
 
 has end => (
   is => 'ro',
-  isa => 'Date',
+  isa => 'SVG::Timeline::Num',
   required => 1,
-  trigger => sub { floating_year_of( @_[0..1], 'end' ) },
+  coerce => 1,
 );
 
 has colour => (
