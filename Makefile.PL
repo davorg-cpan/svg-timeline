@@ -19,7 +19,7 @@ WriteMakefile(
     Moose => 0,
     'List::Util' => 0,
     Carp => 0,
-    DateTime => 0,
+    'DateTime::Format::Strptime' => 0,
   },
   META_MERGE => {
     'meta-spec' => { version => 2 },

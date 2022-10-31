@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.2] - 2022-10-31
+
+### Fixed
+
+- Add DateTime::Format::Strptime as pre-req
+
 ## [0.1.1] - 2022-10-31
 
 ### Fixed
