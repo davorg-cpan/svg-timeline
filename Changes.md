@@ -1,6 +1,13 @@
 # Change Log
 
-## [0.1.00] - 2022-10-30
+## [0.1.1] - 2022-10-31
+
+### Fixed
+
+- Switch from Time::Piece to DateTime because it handles
+  older dates.
+
+## [0.1.0] - 2022-10-30
 
 ### Improved
 
