@@ -52,7 +52,6 @@ use Moose;
 use Moose::Util::TypeConstraints;
 use SVG;
 use List::Util qw[min max];
-use Time::Piece;
 use Carp;
 
 use SVG::Timeline::Event;
