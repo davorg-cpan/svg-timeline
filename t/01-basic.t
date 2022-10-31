@@ -5,17 +5,19 @@ use Test::More;
 use SVG::Timeline;
 use Time::Piece;
 
+my $now = localtime;
+
 my $tl = SVG::Timeline->new;
 
 $tl->add_event({
   start => '1987',
-  end   => '2022-10-23',
+  end   => $now->strftime('%Y-%m-%d'),
   text  => 'Perl',
 });
 
 $tl->add_event({
   start => '2017-07-29',
-  end   => '2022',
+  end   => $now->year,
   text  => 'SVG::Timeline on CPAN',
 });
 
@@ -26,7 +28,7 @@ my $vb1 = $tl->svg->getChildren->[0]{viewBox};
 
 $tl->add_event({
   start => 1991,
-  end   => localtime->year,
+  end   => $now->year,
   text  => 'Python',
 });
 is($tl->count_events, 3, 'Correct number of events');

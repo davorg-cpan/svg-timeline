@@ -14,7 +14,7 @@ use 5.010;
 
 use Moose;
 use Moose::Util::TypeConstraints;
-use Time::Piece;
+use DateTime::Format::Strptime;
 
 coerce __PACKAGE__,
   from 'HashRef',
@@ -63,9 +63,10 @@ has text => (
 sub str2num {
   my ($datestr) = @_;
 
-  my $date = Time::Piece->strptime($datestr, '%Y-%m-%d');
+  my $date = DateTime::Format::Strptime->new( pattern => '%Y-%m-%d' )
+               ->parse_datetime($datestr);
 
-  return $date->year + ( $date->yday / ($date->is_leap_year ? 366 : 365) );
+  return $date->year + ( $date->day_of_year / ($date->is_leap_year ? 366 : 365) );
 }
 
 has start => (
