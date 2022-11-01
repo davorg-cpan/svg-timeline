@@ -14,6 +14,7 @@ use 5.014;
 
 use Moose;
 use Moose::Util::TypeConstraints;
+use DateTime;
 use DateTime::Format::Strptime;
 
 coerce __PACKAGE__,
@@ -90,6 +91,34 @@ has colour => (
 );
 
 =head1 METHODS
+
+=head2 start_year
+
+Return the year that the event started.
+
+=cut
+
+sub start_year {
+  my $self = shift;
+
+  return int $self->start;
+}
+
+=head2 end_year
+
+Return the year that the event ended.
+
+=cut
+
+sub end_year {
+  my $self = shift;
+
+  if ($self->end) {
+    return int $self->end;
+  } else {
+    return DateTime->now->year;
+  }
+}
 
 =head2 draw_on($tl)
 

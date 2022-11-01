@@ -411,7 +411,7 @@ Returns the minimum year from all the events in the timeline.
 sub min_year {
   my $self = shift;
   return unless $self->has_events;
-  my @years = map { int ($_->start) } $self->all_events;
+  my @years = map { $_->start_year } $self->all_events;
   return min(@years);
 }
 
@@ -424,7 +424,7 @@ Returns the maximum year from all the events in the timeline.
 sub max_year {
   my $self = shift;
   return unless $self->has_events;
-  my @years = map { int($_->end) // localtime->year } $self->all_events;
+  my @years = map { $_->end_year } $self->all_events;
   return max(@years);
 }
 
