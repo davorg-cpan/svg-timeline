@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.3] - 2022-11-01
+
+### Fixed
+
+- Bump required Perl version
+
 ## [0.1.2] - 2022-10-31
 
 ### Fixed
