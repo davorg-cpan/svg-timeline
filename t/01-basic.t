@@ -3,9 +3,9 @@ use warnings;
 use Test::More;
 
 use SVG::Timeline;
-use Time::Piece;
+use DateTime;
 
-my $now = localtime;
+my $now = DateTime->now;
 
 my $tl = SVG::Timeline->new;
 

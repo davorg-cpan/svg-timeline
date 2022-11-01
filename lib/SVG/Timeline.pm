@@ -44,7 +44,7 @@ probably don't need any of these, but the following options are supported:
 
 package SVG::Timeline;
 
-use 5.010;
+use 5.014;
 
 our $VERSION = '0.1.2';
 

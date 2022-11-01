@@ -10,7 +10,7 @@ See L<SVG::Timeline>.
 
 package SVG::Timeline::Event;
 
-use 5.010;
+use 5.014;
 
 use Moose;
 use Moose::Util::TypeConstraints;
