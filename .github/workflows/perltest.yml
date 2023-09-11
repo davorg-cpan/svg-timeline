@@ -28,7 +28,7 @@ jobs:
           perl-version: ${{ matrix.perl }}
       - run: perl -V
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - run: cpanm -n --installdeps .
       - run: prove -lv t
       - name: Archive CPAN logs on Windows
@@ -51,7 +51,7 @@ jobs:
     container: davorg/perl-coveralls:latest
     name: Test coverage
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install modules
         run: cpanm -n --installdeps .
       - name: Coverage
