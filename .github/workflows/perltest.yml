@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  test:
     uses: PerlToolsTeam/github_workflows/.github/workflows/cpan-test.yml@main
 
   coverage:
@@ -16,3 +16,6 @@ jobs:
 
   perlcritic:
     uses: PerlToolsTeam/github_workflows/.github/workflows/cpan-perlcritic.yml@main
+
+  complexity:
+    uses: PerlToolsTeam/github_workflows/.github/workflows/cpan-complexity.yml@main
